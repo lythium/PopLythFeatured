@@ -48,14 +48,22 @@ class PopLythFeatured extends Module {
     public function hookDisplayFooter()
     {
         if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
-            $logged = true;
+            $result = (bool)true;
         } else {
-            $logged = false;
+            $result = (bool)false;
         }
-        $this->context->smarty->assign(array(
-            'logged' => $logged
-        ));
+        $this::researchProduct($result);
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
-
+    private function researchProduct($logged)
+    {
+        if ($logged) {
+            $var = "yes";
+        } else {
+            $var = "no";
+        }
+        $this->context->smarty->assign(array(
+            'productName' => $name
+        ));
+    }
 }
