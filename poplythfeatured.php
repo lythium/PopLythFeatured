@@ -31,7 +31,7 @@ class PopLythFeatured extends Module {
     {
         return parent::install()
             && $this->registerHook('header')
-            && $this->registerHook('DisplayHome');
+            && $this->registerHook('displayFooter');
     }
 
     public function uninstall()
@@ -45,9 +45,15 @@ class PopLythFeatured extends Module {
         $this->context->controller->addCSS($this->_path.'/views/css/poplythfeatured.css', 'all');
     }
 
-    public function hookDisplayHome()
+    public function hookDisplayFooter()
     {
-        return $this->display(__FILE__, 'poplythfeatured.tpl');
+        if ($cookie->isLogged()) {
+            $logged = true;
+            $this->context->smarty->assign(array(
+                'logged' => $logged
+            ));
+        }
+        return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
 
 }
