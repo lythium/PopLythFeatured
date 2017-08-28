@@ -47,12 +47,14 @@ class PopLythFeatured extends Module {
 
     public function hookDisplayFooter()
     {
-        if ($cookie->isLogged()) {
+        if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
             $logged = true;
-            $this->context->smarty->assign(array(
-                'logged' => $logged
-            ));
+        } else {
+            $logged = false;
         }
+        $this->context->smarty->assign(array(
+            'logged' => $logged
+        ));
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
 
