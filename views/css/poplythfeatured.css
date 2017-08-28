@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.poplythfeatured {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.poplythfeatured .popcards {
+    position: fixed;
+    background-color: #ccc;
+    color: #333;
+    z-index: 20;
+    right: 0;
+    bottom: 0;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.poplythfeatured .inter-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Card Title */
+.poplythfeatured .inter-cards .name-product {
+
+}
+
+/* Content Card */
+.poplythfeatured .inter-cards .content {
+
+}
+.poplythfeatured .inter-cards .content .text-content {
+
+}
+.poplythfeatured .inter-cards .content img {
+
+}
+
+/* button card */
+.poplythfeatured .inter-cards .pop-action {
+
+}
+.poplythfeatured .inter-cards .pop-action .btn-more {
+
+}
+.poplythfeatured .inter-cards .pop-action .btn-add-cart {
+
+}
