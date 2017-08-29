@@ -62,8 +62,12 @@ class PopLythFeatured extends Module {
         } else {
             $var = "no";
         }
-        $this->context->smarty->assign(array(
-            'productName' => $name
+        global $cookie;
+
+        $context = Context::getContext();
+
+        return $this->context->smarty->assign(array(
+            'name' => $context
         ));
     }
 }
