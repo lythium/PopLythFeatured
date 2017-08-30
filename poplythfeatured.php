@@ -52,7 +52,11 @@ class PopLythFeatured extends Module {
         } else {
             $result = (bool)false;
         }
-        $this::researchProduct($result);
+        $products = "bad";
+        $this->researchProduct($result);
+        $this->context->smarty->assign(array(
+           'produits' => $products
+        ));
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
     private function researchProduct($logged)
@@ -61,13 +65,12 @@ class PopLythFeatured extends Module {
             $var = "yes";
         } else {
             $var = "no";
-        }
-        global $cookie;
+        };
+        $productObj = New Product();
+        $products = $productObj::getProducts($this->context->language->id, 1, 10, 'id_product', 'DESC', $only_active = true, $on_sale = true);
+        $productdiscount = $products->isDiscounted();
+        var_dump($products);
 
-        $context = Context::getContext();
-
-        return $this->context->smarty->assign(array(
-            'name' => $context
-        ));
+        return $products;
     }
 }

@@ -5,7 +5,7 @@
             <div class="content">
                 <img src="" alt="">
                 <div class="text-content">
-                    <pre>{$name}</pre>
+                    <pre>{$produits|@var_dump}</pre>
                 </div>
             </div>
             <div class="pop-action">
