@@ -73,13 +73,15 @@ class PopLythFeatured extends Module {
         };
         New Product();
         $products = Product::getProducts($this->context->language->id, 1, null, 'id_product', 'DESC');
-        $result = array();
-        // Stock in new array if products is on sale
-        foreach ($products as $key){
-            if ($key["on_sale"] == 1) {$result[]=$key;}
-        };
-        var_dump($products);
+        $result = $this::filterArrayKey($products, "on_sale", "1");
         return $result;
     }
-
+    private static function filterArrayKey($array, $filterKey, $filterValue) {
+        $result = array();
+        // Stock in new array if $filterKey => $filterValue
+        foreach ($array as $key){
+            if ($key[$filterKey] == $filterValue) {$result[]=$key;}
+        };
+        return $result;
+    }
 }
