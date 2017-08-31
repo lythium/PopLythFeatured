@@ -47,3 +47,10 @@
 .poplythfeatured .inter-cards .pop-action .btn-add-cart {
 
 }
+
+
+/* Mode Dev */
+.poplythfeatured .inter-cards .content .text-content pre {
+    overflow-y: scroll;
+    max-height: 600px;
+}
