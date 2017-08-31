@@ -48,22 +48,25 @@ class PopLythFeatured extends Module {
     public function hookDisplayFooter()
     {
         if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
-            $result = (bool)true;
+            $log = (bool)true;
         } else {
-            $result = (bool)false;
+            $log = (bool)false;
         }
-        $test = "bad";
-        $result = $this->researchProduct($result);
+        $result = "bad";
+        $discount = "false";
+        $result = $this->researchProduct($log);
 
+        // Stock Variable
         $this->context->smarty->assign(array(
-           'test' => $result
+           'test' => $result,
+           'discount' => $discount
         ));
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
 
-    private function researchProduct($logged)
+    private function researchProduct($log)
     {
-        if ($logged) {
+        if ($log) {
             $var = "yes";
         } else {
             $var = "no";
@@ -71,10 +74,10 @@ class PopLythFeatured extends Module {
         New Product();
         $products = Product::getProducts($this->context->language->id, 1, null, 'id_product', 'DESC');
         $result = array();
+        // Stock in new array if products is on sale
         foreach ($products as $key){
             if ($key["on_sale"] == 1) {$result[]=$key;}
-        }
-
+        };
         var_dump($products);
         return $result;
     }
