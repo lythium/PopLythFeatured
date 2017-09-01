@@ -52,13 +52,8 @@ class PopLythFeatured extends Module {
         } else {
             $log = (bool)false;
         }
-        $product_id = $this->researchProduct($log);
+        $product = $this->researchProduct($log);
 
-        if ($product_id) {
-            $product = new Product($product_id);
-        } else {
-            $product = false;
-        }
 
         // Stock Variable
         $this->context->smarty->assign(array(
@@ -73,38 +68,18 @@ class PopLythFeatured extends Module {
         if ($log) {
             # code...
         } else {
-            $sql = new DbQuery();
-            $sql->select('p.id_product');
-            $sql->from('product', 'p');
-            $sql->where('on_sale = 1 AND available_for_order = 1');
-            $sql->orderBy('RAND()');
-            $result = Db::getInstance()->getValue($sql);
+            $result = Product::getRandomSpecial($this->context->language->id);
             if (empty($result)) {
                 $sql = new DbQuery();
-                $sql->select('s.id_product');
-                $sql->from('specific_price', 's');
-                $sql->orderBy('RAND()');
-                $result = Db::getInstance()->getValue($sql);
-                if (empty($result)) {
-                    $sql = new DbQuery();
-                    $sql->select('p.id_product');
-                    $sql->from('product', 'p');
-                    $sql->where('available_for_order = 1');
-                    $sql->orderBy('id_product DESC');
-                    $result = Db::getInstance()->getValue($sql);
-                }
+                $sql->select('p.id_product');
+                $sql->from('product', 'p');
+                $sql->where('active = 1');
+                $sql->orderBy('id_product DESC');
+                $product_id = Db::getInstance()->getValue($sql);
+                $result = New Product($product_id);
             }
         }
-        return $result;
-        var_dump($result);
-    }
 
-    private static function filterArrayKey($array, $filterKey, $filterValue) {
-        $result = array();
-        // Stock in new array if $filterKey => $filterValue
-        foreach ($array as $key){
-            if ($key[$filterKey] == $filterValue) {$result[]=$key;}
-        };
         return $result;
     }
 }
