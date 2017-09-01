@@ -66,7 +66,6 @@ class PopLythFeatured extends Module {
 
     private function researchProduct($log)
     {
-        New Product();
         $products = Product::getProducts($this->context->language->id, 1, null, 'id_product', 'DESC');
         if ($log) {
             // if user log check with last order
