@@ -66,14 +66,19 @@ class PopLythFeatured extends Module {
 
     private function researchProduct($log)
     {
-        if ($log) {
-            $var = "yes";
-        } else {
-            $var = "no";
-        };
         New Product();
         $products = Product::getProducts($this->context->language->id, 1, null, 'id_product', 'DESC');
-        $result = $this::filterArrayKey($products, "on_sale", "1");
+        if ($log) {
+            // if user log check with last order
+        } else {
+            $resultTest = $this::filterArrayKey($products, "on_sale", "1");
+            if (count($resultTest) > 0) { // if isset product on sale display $result
+                $result = $resultTest;
+            } else { // if !isset product on sale research product with reduction
+
+            }
+
+        };
         return $result;
     }
     private static function filterArrayKey($array, $filterKey, $filterValue) {
