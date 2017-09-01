@@ -52,34 +52,53 @@ class PopLythFeatured extends Module {
         } else {
             $log = (bool)false;
         }
-        $result = "bad";
-        $discount = "false";
-        $result = $this->researchProduct($log);
+        $product_id = $this->researchProduct($log);
+
+        if ($product_id) {
+            $product = new Product($product_id);
+        } else {
+            $product = false;
+        }
 
         // Stock Variable
         $this->context->smarty->assign(array(
-           'test' => $result,
-           'discount' => $discount
+           'product' => $product,
         ));
+
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
 
     private function researchProduct($log)
     {
-        $products = Product::getProducts($this->context->language->id, 1, null, 'id_product', 'DESC');
         if ($log) {
-            // if user log check with last order
+            # code...
         } else {
-            $resultTest = $this::filterArrayKey($products, "on_sale", "1");
-            if (count($resultTest) > 0) { // if isset product on sale display $result
-                $result = $resultTest;
-            } else { // if !isset product on sale research product with reduction
-
+            $sql = new DbQuery();
+            $sql->select('p.id_product');
+            $sql->from('product', 'p');
+            $sql->where('on_sale = 1 AND available_for_order = 1');
+            $sql->orderBy('RAND()');
+            $result = Db::getInstance()->getValue($sql);
+            if (empty($result)) {
+                $sql = new DbQuery();
+                $sql->select('s.id_product');
+                $sql->from('specific_price', 's');
+                $sql->orderBy('RAND()');
+                $result = Db::getInstance()->getValue($sql);
+                if (empty($result)) {
+                    $sql = new DbQuery();
+                    $sql->select('p.id_product');
+                    $sql->from('product', 'p');
+                    $sql->where('available_for_order = 1');
+                    $sql->orderBy('id_product DESC');
+                    $result = Db::getInstance()->getValue($sql);
+                }
             }
-
-        };
+        }
         return $result;
+        var_dump($result);
     }
+
     private static function filterArrayKey($array, $filterKey, $filterValue) {
         $result = array();
         // Stock in new array if $filterKey => $filterValue

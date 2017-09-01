@@ -1,3 +1,4 @@
+{if ($product)}
 <div class="container poplythfeatured">
     <div class="popcards col-md-4">
         <div class="inter-cards">
@@ -5,7 +6,7 @@
             <div class="content">
                 <img src="" alt="">
                 <div class="text-content">
-                    <pre>{$test|@var_dump}</pre>
+                    <pre>{$product|@var_dump}</pre>
                 </div>
             </div>
             <div class="pop-action">
@@ -15,3 +16,4 @@
         </div>
     </div>
 </div>
+{/if}
