@@ -53,11 +53,13 @@ class PopLythFeatured extends Module {
             $log = (bool)false;
         }
         $product = $this->researchProduct($log);
-
-
+        $have_image = $this->checkImage($product);
+        // die(var_dump($product));
         // Stock Variable
         $this->context->smarty->assign(array(
            'product' => $product,
+           'have_image' => $have_image,
+           'product_name' => $product->name[1],
         ));
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
@@ -69,17 +71,27 @@ class PopLythFeatured extends Module {
             # code...
         } else {
             $result = Product::getRandomSpecial($this->context->language->id);
+            $result = New Product($result["id_product"]);
             if (empty($result)) {
                 $sql = new DbQuery();
                 $sql->select('p.id_product');
                 $sql->from('product', 'p');
                 $sql->where('active = 1');
                 $sql->orderBy('id_product DESC');
-                $product_id = Db::getInstance()->getValue($sql);
-                $result = New Product($product_id);
+                $id_product = Db::getInstance()->getValue($sql);
+                $result = New Product($id_product);
             }
         }
-
         return $result;
+    }
+
+    private function checkImage($product)
+    {
+        $product_image = $product::getCover($product->id);
+        if (empty($product_image)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
