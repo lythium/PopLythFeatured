@@ -61,9 +61,9 @@ class PopLythFeatured extends Module {
         // Stock Variable
         $this->context->smarty->assign(array(
            'product_select' => $product,
-           'have_image' => $have_image,
-           'id_cover' => $cover["id_image"],
-           'product_name' => $product->name[1],
+           'have_image' => (bool)$have_image,
+           'id_cover' => (int)$cover["id_image"],
+           'product_name' => (string)$product->name[1],
         ));
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
