@@ -53,15 +53,17 @@ class PopLythFeatured extends Module {
             $log = (bool)false;
         }
         $product = $this->researchProduct($log);
-        $have_image = ImageCore::hasImages($this->context->language->id, $product->id);
-        $link_image = $this->context->controller->link->getImageLink($product->link_rewrite[1], $product->id, "cover");
-        // die(var_dump($product));
+        $have_image = ImageCore::hasImages($this->context->language->id, (int)$product->id);
+        $cover = Product::getCover((int)$product->id);
+        // die(var_dump($cover["id_image"]));
+        // $id_cover = $product->id.'-'.$id_image;
+
         // Stock Variable
         $this->context->smarty->assign(array(
            'product_select' => $product,
            'have_image' => $have_image,
+           'id_cover' => $cover["id_image"],
            'product_name' => $product->name[1],
-           'link_image' => $link_image,
         ));
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');

@@ -2,7 +2,7 @@
 <div class="container poplythfeatured">
     <div class="popcards col-md-4">
         <div class="inter-cards">
-            <a href="{$link->getProductLink($product)|escape:'html':'UTF-8'}">
+            <a href="{$link->getProductLink($product_select->id)|escape:'html':'UTF-8'}">
                 <h3 class="name-product">{$product_name|escape:'html':'UTF-8'}</h3>
             </a>
             <div class="content">
@@ -21,15 +21,9 @@
                     {/if}
                     {if $have_image}
                         <span id="view_full_size">
-                            {if $have_image }
-                                <a class="{$link->getProductLink($product_select)|escape:'html':'UTF-8'}" >
-                                    <img itemprop="image" src="{$link->getImageLink($product_select->link_rewrite[1], $cover.id_image, 'large_default')|escape:'html':'UTF-8'}" />
+                                <a class="{$link->getProductLink($product_select->id)|escape:'html':'UTF-8'}" >
+                                    <img itemprop="image" src="{$link->getImageLink($product_select->link_rewrite[1], $id_cover, 'large_default')|escape:'html':'UTF-8'}" />
                                 </a>
-                            {else}
-                                <a class="{$link->getProductLink($product_select)|escape:'html':'UTF-8'}" >
-                                    <img itemprop="image" />
-                                </a>
-                            {/if}
                         </span>
                     {else}
                         <span id="view_full_size">
