@@ -1,4 +1,4 @@
-{if ($product)}
+{if ($product_select)}
 <div class="container poplythfeatured">
     <div class="popcards col-md-4">
         <div class="inter-cards">
@@ -7,40 +7,40 @@
             </a>
             <div class="content">
                 <div id="image-block" class="clearfix">
-                    {if $product->new}
+                    {if $product_select->new}
                         <span class="new-box">
                             <span class="new-label">{l s='New'}</span>
                         </span>
                     {/if}
-                    {if $product->on_sale}
+                    {if $product_select->on_sale}
                         <span class="sale-box no-print">
                             <span class="sale-label">{l s='Sale!'}</span>
                         </span>
-                    {elseif isset($product->specific_prices) && $product->reduction && $product->price_without_reduction > $product->price}
+                    {elseif isset($product_select->specific_prices) && $product_select->reduction && $product_select->price_without_reduction > $product_select->price}
                         <span class="discount">{l s='Reduced price!'}</span>
                     {/if}
                     {if $have_image}
                         <span id="view_full_size">
                             {if $have_image }
-                                <a class="{$link->getProductLink($product)|escape:'html':'UTF-8'}" >
-                                    <img itemprop="image" src="{$link->getImageLink($product->link_rewrite[1], $product->id +1, 'large_default')|escape:'html':'UTF-8'}" />
+                                <a class="{$link->getProductLink($product_select)|escape:'html':'UTF-8'}" >
+                                    <img itemprop="image" src="{$link->getImageLink($product_select->link_rewrite[1], $cover.id_image, 'large_default')|escape:'html':'UTF-8'}" />
                                 </a>
                             {else}
-                                <a class="{$link->getProductLink($product)|escape:'html':'UTF-8'}" >
+                                <a class="{$link->getProductLink($product_select)|escape:'html':'UTF-8'}" >
                                     <img itemprop="image" />
                                 </a>
                             {/if}
                         </span>
                     {else}
                         <span id="view_full_size">
-                            <a class="{$link->getProductLink($product)|escape:'html':'UTF-8'}" >
+                            <a class="{$link->getProductLink($product_select)|escape:'html':'UTF-8'}" >
                                 <img itemprop="image" />
                             </a>
                         </span>
                     {/if}
                 </div> <!-- end image-block -->
                 <div class="text-content">
-                    <!-- <pre>{$product|@var_dump}</pre> -->
+                    <!-- <pre>{$product_select|@var_dump}</pre> -->
                 </div>
             </div>
             <div class="pop-action">

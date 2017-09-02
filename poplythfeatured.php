@@ -53,13 +53,15 @@ class PopLythFeatured extends Module {
             $log = (bool)false;
         }
         $product = $this->researchProduct($log);
-        $have_image = $this->checkImage($product);
+        $have_image = ImageCore::hasImages($this->context->language->id, $product->id);
+        $link_image = $this->context->controller->link->getImageLink($product->link_rewrite[1], $product->id, "cover");
         // die(var_dump($product));
         // Stock Variable
         $this->context->smarty->assign(array(
-           'product' => $product,
+           'product_select' => $product,
            'have_image' => $have_image,
            'product_name' => $product->name[1],
+           'link_image' => $link_image,
         ));
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
@@ -83,15 +85,5 @@ class PopLythFeatured extends Module {
             }
         }
         return $result;
-    }
-
-    private function checkImage($product)
-    {
-        $product_image = $product::getCover($product->id);
-        if (empty($product_image)) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }
