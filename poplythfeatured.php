@@ -63,7 +63,7 @@ class PopLythFeatured extends Module {
            'product_select' => $product,
            'have_image' => (bool)$have_image,
            'id_cover' => (int)$cover["id_image"],
-           'product_name' => (string)$product->name[1],
+           'product_name' => (string)$product["name"],
         ));
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
@@ -78,7 +78,7 @@ class PopLythFeatured extends Module {
             // $result = New Product($result["id_product"]);
             // die(var_dump($result));
             if (empty($result)) {
-                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 10);
+                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 1);
                 // $sql = new DbQuery();
                 // $sql->select('p.id_product');
                 // $sql->from('product', 'p');
