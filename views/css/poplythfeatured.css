@@ -8,7 +8,8 @@
 }
 .poplythfeatured .popcards {
     position: fixed;
-    background-color: #ccc;
+    background-color: #e9e9e9;
+    width: 360px !important;
     color: #333;
     z-index: 20;
     right: 0;
@@ -28,13 +29,31 @@
 
 /* Content Card */
 .poplythfeatured .inter-cards .content {
-
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .poplythfeatured .inter-cards .content .text-content {
-
 }
-.poplythfeatured .inter-cards .content img {
-
+.poplythfeatured .inter-cards .content #image-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    width: 270px;
+    height: 270px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+.poplythfeatured .inter-cards .content #image-block a {
+    width: 250px;
+    height: 250px;
+}
+.poplythfeatured .inter-cards .content #image-block a img {
+    display: flex;
+    width: 100%;
 }
 
 /* button card */

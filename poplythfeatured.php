@@ -76,6 +76,7 @@ class PopLythFeatured extends Module {
         } else {
             $result = Product::getRandomSpecial($this->context->language->id);
             $result = New Product($result["id_product"]);
+            // die(var_dump($result));
             if (empty($result)) {
                 $sql = new DbQuery();
                 $sql->select('p.id_product');
