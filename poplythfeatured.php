@@ -53,9 +53,9 @@ class PopLythFeatured extends Module {
             $log = (bool)false;
         }
         $product = $this->researchProduct($log);
-        $have_image = ImageCore::hasImages($this->context->language->id, (int)$product->id);
-        $cover = Product::getCover((int)$product->id);
-        // die(var_dump($cover["id_image"]));
+        $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
+        $cover = Product::getCover((int)$product["id_product"]);
+        die(var_dump($product));
         // $id_cover = $product->id.'-'.$id_image;
 
         // Stock Variable
@@ -75,16 +75,17 @@ class PopLythFeatured extends Module {
             # code...
         } else {
             $result = Product::getRandomSpecial($this->context->language->id);
-            $result = New Product($result["id_product"]);
+            // $result = New Product($result["id_product"]);
             // die(var_dump($result));
             if (empty($result)) {
-                $sql = new DbQuery();
-                $sql->select('p.id_product');
-                $sql->from('product', 'p');
-                $sql->where('active = 1');
-                $sql->orderBy('id_product DESC');
-                $id_product = Db::getInstance()->getValue($sql);
-                $result = New Product($id_product);
+                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 10);
+                // $sql = new DbQuery();
+                // $sql->select('p.id_product');
+                // $sql->from('product', 'p');
+                // $sql->where('active = 1');
+                // $sql->orderBy('id_product DESC');
+                // $id_product = Db::getInstance()->getValue($sql);
+                // $result = New Product($id_product);
             }
         }
         return $result;
