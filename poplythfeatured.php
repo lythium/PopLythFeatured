@@ -55,7 +55,7 @@ class PopLythFeatured extends Module {
         $product = $this->researchProduct($log);
         $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
         $cover = Product::getCover((int)$product["id_product"]);
-        die(var_dump($product));
+        // die(var_dump($product));
         // $id_cover = $product->id.'-'.$id_image;
 
         // Stock Variable
