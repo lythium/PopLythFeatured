@@ -57,7 +57,11 @@
             </div>
             <div class="pop-action">
                 <button class="btn btn-more" type="button" name="button">More Details</button>
-                <button class="btn btn-add-cart" type="button" name="button">Add to card</button>
+                <div class="no-print">
+                    <a class="exclusive button ajax_add_to_cart_button" href="{$link->getPageLink('cart', true, NULL, "qty=1&amp;id_product={$product_select.id_product|intval}&amp;token={$static_token}&amp;add")|escape:'html':'UTF-8'}" data-id-product="{$product_select.id_product|intval}" title="{l s='Add to cart'}">
+                        <span>{l s='Add to cart'}</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
