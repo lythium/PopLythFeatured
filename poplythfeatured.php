@@ -58,7 +58,6 @@ class PopLythFeatured extends Module {
         // $price = Combination::getPrice($product["id_product_attribute"]);
         // die(var_dump($product));
         // die(var_dump($price));
-        // $id_cover = $product->id.'-'.$id_image;
 
         // Stock Variable
         if ($product) {
@@ -70,7 +69,7 @@ class PopLythFeatured extends Module {
             ));
             if ($product["show_price"]) {
                 $this->context->smarty->assign(array(
-                    'price' => $product["price"],
+                    'price_select' => $product["price"],
                     'priceWithoutReduction' => $product["price_without_reduction"],
                 ));
             };

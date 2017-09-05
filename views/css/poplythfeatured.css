@@ -34,8 +34,33 @@
     flex-direction: column;
     align-items: center;
 }
-.poplythfeatured .inter-cards .content .text-content {
+
+/* Content Card Info */
+.poplythfeatured .inter-cards .content .content-info {
+
 }
+.poplythfeatured .inter-cards .content .content-info .price-info {
+
+}
+.poplythfeatured .inter-cards .content .content-info .price-info .price {
+
+}
+.poplythfeatured .inter-cards .content .content-info .price-info #product_price_display {
+
+}
+.poplythfeatured .inter-cards .content .content-info .price-info .price_reduction_block {
+
+}
+.poplythfeatured .inter-cards .content .content-info .price-info .price_reduction_block #old_price {
+    
+}
+.poplythfeatured .inter-cards .content .content-info .price-info .price_reduction_block #reduction_percent {
+
+}
+.poplythfeatured .inter-cards .content .content-info .price-info .price_reduction_block #reduction_amount {
+
+}
+/* Content Card img */
 .poplythfeatured .inter-cards .content #image-block {
     display: flex;
     flex-direction: column;
