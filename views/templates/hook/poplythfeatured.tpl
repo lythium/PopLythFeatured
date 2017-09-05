@@ -1,11 +1,4 @@
 {if ($product_select)}
-{if !$priceDisplay || $priceDisplay == 2}
-    {assign var='productPrice' value=$product_select->getPrice(true, $smarty.const.NULL, 6)}
-    {assign var='productPriceWithoutReduction' value=$product_select->getPriceWithoutReduct(false, $smarty.const.NULL)}
-{elseif $priceDisplay == 1}
-    {assign var='productPrice' value=$product_select->getPrice(false, $smarty.const.NULL, 6)}
-    {assign var='productPriceWithoutReduction' value=$product_select->getPriceWithoutReduct(true, $smarty.const.NULL)}
-{/if}
 <div class="container poplythfeatured">
     <div class="popcards">
         <div class="inter-cards">
@@ -36,8 +29,12 @@
                     </a>
                     {/if}
                 </div> <!-- end image-block -->
-                <div class="text-content">
+                <div class="content-info">
+                    <div class="price-info">
+                        {if $product->quantity > 0}<link itemprop="availability" href="https://schema.org/InStock"/>{/if}
+                        <span id="our_price_display" class="price" itemprop="price" content="{$price}">{convertPrice price=$price|floatval}</span>
                     <!-- <pre>{$product_select|@var_dump}</pre> -->
+                    </div>
                 </div>
             </div>
             <div class="pop-action">

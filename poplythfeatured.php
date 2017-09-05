@@ -55,16 +55,31 @@ class PopLythFeatured extends Module {
         $product = $this->researchProduct($log);
         $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
         $cover = Product::getCover((int)$product["id_product"]);
+        // $price = Combination::getPrice($product["id_product_attribute"]);
         // die(var_dump($product));
+        // die(var_dump($price));
         // $id_cover = $product->id.'-'.$id_image;
 
         // Stock Variable
-        $this->context->smarty->assign(array(
-           'product_select' => $product,
-           'have_image' => (bool)$have_image,
-           'id_cover' => (int)$cover["id_image"],
-           'product_name' => (string)$product["name"],
-        ));
+        if ($product) {
+            $this->context->smarty->assign(array(
+                'product_select' => $product,
+                'have_image' => (bool)$have_image,
+                'id_cover' => (int)$cover["id_image"],
+                'product_name' => (string)$product["name"],
+            ));
+            if ($product["show_price"]) {
+                $this->context->smarty->assign(array(
+                    'price' => $product["price"],
+                    'priceWithoutReduction' => $product["price_without_reduction"],
+                ));
+            };
+            if ($product["specific_prices"]) {
+                $this->context->smarty->assign(array(
+                    'reduction' => $product["specific_prices"]["reduction"],
+                ));
+            };
+        }
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
@@ -77,8 +92,11 @@ class PopLythFeatured extends Module {
             $result = Product::getRandomSpecial($this->context->language->id);
             // $result = New Product($result["id_product"]);
             // die(var_dump($result));
-            if (empty($result)) {
-                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 1);
+            if (empty($result) || !$result) {
+                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 3);
+                $count = count($result) - 1;
+                $result = $result[rand(0, $count)];
+                // die(var_dump($result));
                 // $sql = new DbQuery();
                 // $sql->select('p.id_product');
                 // $sql->from('product', 'p');
