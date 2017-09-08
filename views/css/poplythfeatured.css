@@ -88,6 +88,7 @@
 }
 /* Content Card img */
 .poplythfeatured .inter-cards .content #image-block {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
