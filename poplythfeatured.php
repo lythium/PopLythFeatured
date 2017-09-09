@@ -48,19 +48,19 @@ class PopLythFeatured extends Module {
     public function hookDisplayFooter()
     {
         if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
-            $log = (bool)true;
+            $product = false;
+            $product = $this->researchSuitableProduct();
         } else {
-            $log = (bool)false;
+            $product = $this->researchProductSpecial();
         }
-        $product = $this->researchProduct($log);
-        $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
-        $cover = Product::getCover((int)$product["id_product"]);
-        // $price = Combination::getPrice($product["id_product_attribute"]);
-        // die(var_dump($product));
-        // die(var_dump($price));
 
         // Stock Variable
         if ($product) {
+            $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
+            $cover = Product::getCover((int)$product["id_product"]);
+            // $price = Combination::getPrice($product["id_product_attribute"]);
+            // die(var_dump($product));
+            // die(var_dump($price));
             $this->context->smarty->assign(array(
                 'product_select' => $product,
                 'have_image' => (bool)$have_image,
@@ -70,41 +70,37 @@ class PopLythFeatured extends Module {
             if ($product["show_price"]) {
                 $this->context->smarty->assign(array(
                     'price_select' => $product["price"],
-                    'priceWithoutReduction' => $product["price_without_reduction"],
+                    // 'priceWithoutReduction' => $product["price_without_reduction"],
                 ));
             };
-            if ($product["specific_prices"]) {
-                $this->context->smarty->assign(array(
-                    'reduction' => $product["specific_prices"]["reduction"],
-                ));
-            };
+            // if ($product["specific_prices"]) {
+            //     $this->context->smarty->assign(array(
+            //         'reduction' => $product["specific_prices"]["reduction"],
+            //     ));
+            // };
         }
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
     }
 
-    private function researchProduct($log)
+    private function researchProductSpecial()
     {
-        if ($log) {
-            # code...
-        } else {
-            $result = Product::getRandomSpecial($this->context->language->id);
-            // $result = New Product($result["id_product"]);
-            // die(var_dump($result));
-            if (empty($result) || !$result) {
-                $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 3);
-                $count = count($result) - 1;
-                $result = $result[rand(0, $count)];
-                // die(var_dump($result));
-                // $sql = new DbQuery();
-                // $sql->select('p.id_product');
-                // $sql->from('product', 'p');
-                // $sql->where('active = 1');
-                // $sql->orderBy('id_product DESC');
-                // $id_product = Db::getInstance()->getValue($sql);
-                // $result = New Product($id_product);
-            }
+        $result = Product::getRandomSpecial($this->context->language->id);
+        // $result = New Product($result["id_product"]);
+        // die(var_dump($result));
+        if (empty($result) || !$result) {
+            $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 3);
+            $count = count($result) - 1;
+            $result = $result[rand(0, $count)];
         }
+        return $result;
+    }
+    private function researchSuitableProduct()
+    {
+        $array = Order::getCustomerOrders($this->context->customer->id, $show_hidden_status = true);
+        $order = New Order($array[0]["id_order"]);
+        die(var_dump($order));
+        // [0]::isValidated()
         return $result;
     }
 }

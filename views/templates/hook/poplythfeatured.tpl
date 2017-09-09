@@ -40,15 +40,17 @@
                                     <!-- {if $product_select.price_without_reduction > $product_select.price && $tax_enabled && $display_tax_label == 1} {if $product_select.show_price == 1}{l s='tax excl.'}{else}{l s='tax incl.'}{/if}{/if} -->
                                 </span>
 
-                                <span id="reduction_percent">
-                                    {if $product_select.specific_prices && $product_select.specific_prices.reduction_type == 'percentage'}-{$product_select.specific_prices.reduction*100}%{/if}
-                                </span>
-
-                                <span id="reduction_amount">
-                                {if $product_select.specific_prices && $product_select.specific_prices.reduction_type == 'amount' && $product_select.specific_prices.reduction|floatval !=0}
-                                    -{convertPrice price=$product_select.price_without_reduction|floatval-$product_select.price|floatval}
+                                {if $product_select.specific_prices && $product_select.specific_prices.reduction_type == 'percentage'}
+                                    <span id="reduction_percent">
+                                        -{$product_select.specific_prices.reduction*100}%
+                                    </span>
                                 {/if}
-                                </span>
+
+                                {if $product_select.specific_prices && $product_select.specific_prices.reduction_type == 'amount' && $product_select.specific_prices.reduction|floatval !=0}
+                                    <span id="reduction_amount">
+                                        -{convertPrice price=$product_select.price_without_reduction|floatval-$product_select.price|floatval}
+                                    </span>
+                                {/if}
                             </div>
                         {/if}
                     <!-- <pre>{$product_select|@var_dump}</pre> -->
