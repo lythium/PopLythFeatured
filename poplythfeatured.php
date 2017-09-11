@@ -98,9 +98,21 @@ class PopLythFeatured extends Module {
     private function researchSuitableProduct()
     {
         $array = Order::getCustomerOrders($this->context->customer->id, $show_hidden_status = true);
-        $order = New Order($array[0]["id_order"]);
-        die(var_dump($order));
-        // [0]::isValidated()
+        // $order = New Order($array[0]["id_order"]);
+        $orderValid = array_filter($array, function ($key, $value){
+            if($key == 'valid' && $value == 1)
+                {
+                    return true;
+                }   else {
+                    return false;
+                }
+            }, ARRAY_FILTER_USE_BOTH);
+            if (count($orderValid) > 0) { // if isset product on sale display $result
+                $result = $orderValid;
+            } else { // if !isset product on sale research product with reduction
+                $result = "null";
+            }
+        die(var_dump($result));
         return $result;
     }
 }
