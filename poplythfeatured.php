@@ -99,20 +99,24 @@ class PopLythFeatured extends Module {
     {
         $array = Order::getCustomerOrders($this->context->customer->id, $show_hidden_status = true);
         // $order = New Order($array[0]["id_order"]);
-        $orderValid = array_filter($array, function ($key, $value){
-            if($key == 'valid' && $value == 1)
-                {
-                    return true;
-                }   else {
-                    return false;
-                }
-            }, ARRAY_FILTER_USE_BOTH);
-            if (count($orderValid) > 0) { // if isset product on sale display $result
-                $result = $orderValid;
-            } else { // if !isset product on sale research product with reduction
-                $result = "null";
+        $orderValid = array();
+        foreach ($array as $key => $cur_value) {
+            if ($cur_value["valid"] == 1) {
+                $orderValid[] = $cur_value;
             }
-        die(var_dump($result));
+        }
+        if ($orderValid) {
+            $list = array();
+            foreach ($orderValid as $key => $value) {
+                $listOrder = OrderDetail::getList($value["id_order"]);
+                foreach ($listOrder as $key => $value) {
+                    // die(var_dump($key["product_id"]));
+                    $list[] = (int)$value["product_id"];
+                }
+
+            }
+        }
+        die(var_dump($list));
         return $result;
     }
 }
