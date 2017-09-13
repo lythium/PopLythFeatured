@@ -47,20 +47,18 @@ class PopLythFeatured extends Module {
 
     public function hookDisplayFooter()
     {
-        if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
-            $product = false;
-            $product = $this->researchSuitableProduct();
-        } else {
-            $product = $this->researchProductSpecial();
-        }
+        $product_id = false;
+        // die(var_dump($product));
+        $product_id = $this->researchSuitableProduct();
+        if (!$product_id) {
+            $product_id = $this->researchProductSpecial();
+        };
+        die(var_dump($product_id));
 
         // Stock Variable
         if ($product) {
             $have_image = ImageCore::hasImages($this->context->language->id, (int)$product["id_product"]);
             $cover = Product::getCover((int)$product["id_product"]);
-            // $price = Combination::getPrice($product["id_product_attribute"]);
-            // die(var_dump($product));
-            // die(var_dump($price));
             $this->context->smarty->assign(array(
                 'product_select' => $product,
                 'have_image' => (bool)$have_image,
@@ -73,11 +71,7 @@ class PopLythFeatured extends Module {
                     // 'priceWithoutReduction' => $product["price_without_reduction"],
                 ));
             };
-            // if ($product["specific_prices"]) {
-            //     $this->context->smarty->assign(array(
-            //         'reduction' => $product["specific_prices"]["reduction"],
-            //     ));
-            // };
+
         }
 
         return $this->display(__FILE__, '/views/templates/hook/poplythfeatured.tpl');
@@ -86,37 +80,40 @@ class PopLythFeatured extends Module {
     private function researchProductSpecial()
     {
         $result = Product::getRandomSpecial($this->context->language->id);
-        // $result = New Product($result["id_product"]);
-        // die(var_dump($result));
         if (empty($result) || !$result) {
             $result = Product::getNewProducts($this->context->language->id,$page_number = 0, $nb_products = 3);
-            $count = count($result) - 1;
-            $result = $result[rand(0, $count)];
+            $result = array_rand($result);
         }
-        return $result;
+        return (int)$result["id_product"];
     }
+
     private function researchSuitableProduct()
     {
-        $array = Order::getCustomerOrders($this->context->customer->id, $show_hidden_status = true);
-        // $order = New Order($array[0]["id_order"]);
-        $orderValid = array();
-        foreach ($array as $key => $cur_value) {
-            if ($cur_value["valid"] == 1) {
-                $orderValid[] = $cur_value;
-            }
-        }
-        if ($orderValid) {
-            $list = array();
-            foreach ($orderValid as $key => $value) {
-                $listOrder = OrderDetail::getList($value["id_order"]);
-                foreach ($listOrder as $key => $value) {
-                    // die(var_dump($key["product_id"]));
-                    $list[] = (int)$value["product_id"];
-                }
+        if ($this->context->customer->isLogged() || $this->context->customer->isGuest()) {
+            $customer_orders = Order::getCustomerOrders($this->context->customer->id, $show_hidden_status = true);
 
+            if (!$customer_orders) {
+                return false;
             }
+
+            $product_ids = array();
+            foreach ($customer_orders as $order) {
+                if ($order["valid"] == 1) {
+                    $order_details = OrderDetail::getList($order['id_order']);
+                    foreach ($order_details as $details) {
+                        $product_ids[] = $details['product_id'];
+                    }
+                }
+            }
+
+            if (!$product_ids) {
+                return false;
+            }
+            $product_ids = array_unique($product_ids);
+
+            return array_rand($product_ids);
+        } else {
+            return false;
         }
-        die(var_dump($list));
-        return $result;
     }
 }
