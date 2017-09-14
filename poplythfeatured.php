@@ -50,10 +50,11 @@ class PopLythFeatured extends Module {
         $product_id = false;
         // die(var_dump($product));
         $product_id = $this->researchSuitableProduct();
+        // die(var_dump($product_id));
         if (!$product_id) {
             $product_id = $this->researchProductSpecial();
         };
-        die(var_dump($product_id));
+
 
         // Stock Variable
         if ($product) {
@@ -101,15 +102,18 @@ class PopLythFeatured extends Module {
                 if ($order["valid"] == 1) {
                     $order_details = OrderDetail::getList($order['id_order']);
                     foreach ($order_details as $details) {
-                        $product_ids[] = $details['product_id'];
+                        $specificPrices = SpecificPrice::getByProductId((int)$details['product_id']);
+                        if (!empty($specificPrices)) {
+                            $product_ids[] = (int)$specificPrices[0]['id_product'];
+                        }
                     }
                 }
             }
-
+            $product_ids = array_unique($product_ids);
+            // die(var_dump($product_ids));
             if (!$product_ids) {
                 return false;
             }
-            $product_ids = array_unique($product_ids);
 
             return array_rand($product_ids);
         } else {
